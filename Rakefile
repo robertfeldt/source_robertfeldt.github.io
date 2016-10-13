@@ -14,21 +14,21 @@ task :generate do
   })).process
 end
 
+DestGitRepo = "/Users/feldt/dev/robertfeldt.github.com"
 
 desc "Generate and publish blog to gh-pages"
 task :publish => [:generate] do
-  Dir.mktmpdir do |tmp|
-    system "mv _site/* #{tmp}"
-    system "git checkout -B gh-pages"
-    system "rm -rf *"
-    system "mv #{tmp}/* ."
+    currdir = Dir.pwd
+    system "cd #{DestGitRepo}"
+    system "git checkout master"
+    system "mv #{currdir}/_site/* ."
     message = "Site updated at #{Time.now.utc}"
     system "git add ."
     system "git commit -am #{message.shellescape}"
-    system "git push origin gh-pages --force"
-    system "git checkout master"
+    system "git push origin master --force"
+    system "cd #{currdir}"
+    system "rm -rf _site"
     system "echo yolo"
-  end
 end
 
-task :default => :publish
+task :default => :generate
