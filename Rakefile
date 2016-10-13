@@ -19,6 +19,7 @@ DestGitRepo = "/Users/feldt/dev/robertfeldt.github.com"
 desc "Generate and publish blog to gh-pages"
 task :publish => [:generate] do
     currdir = Dir.pwd
+    print(currdir)
     system "cd #{DestGitRepo}"
     system "git checkout master"
     system "mv #{currdir}/_site/* ."
